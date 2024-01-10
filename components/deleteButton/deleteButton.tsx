@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import React from "react";
+import classes from "./deleteButton.module.css";
 
 interface DeleteButtonProps {
   id: string;
@@ -22,5 +23,9 @@ export default function DeleteButton({ id }: DeleteButtonProps) {
       }
     }
   }
-  return <button onClick={removeTask}>Remove</button>;
+  return (
+    <button className={classes.deleteButton} onClick={removeTask}>
+      Remove
+    </button>
+  );
 }
