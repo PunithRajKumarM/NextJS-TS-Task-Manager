@@ -28,7 +28,7 @@ export default function TaskList({ tasks }: TaskListProps) {
     return indianDateFormat;
   }
 
-  console.log("Today date", new Date().getTime());
+  console.log("Today date", new Date().toDateString());
 
   return (
     <>
@@ -44,14 +44,18 @@ export default function TaskList({ tasks }: TaskListProps) {
                 DUE DATE : {getIndianStandardTime(task.date.toLocaleString())}
               </span>
 
-              {/* {new Date(task.date).toISOString() > new Date().toISOString() && (
-                <p>Pending</p>
+              {new Date(task.date) > new Date() &&
+                new Date(task.date).toLocaleDateString() !==
+                  new Date().toLocaleDateString() && <p>Pending</p>}
+              {new Date(task.date) < new Date() &&
+                new Date(task.date).toLocaleDateString() !==
+                  new Date().toLocaleDateString() && (
+                  <p style={{ color: "red" }}>Over</p>
+                )}
+              {new Date(task.date).toLocaleDateString() ===
+                new Date().toLocaleDateString() && (
+                <p style={{ color: "green" }}>Due date</p>
               )}
-              {new Date(task.date).toISOString() < new Date().toISOString() && (
-                <p>Over</p>
-              )}
-              {new Date(task.date).toISOString() ===
-                new Date().toISOString() && <p>Due date</p>} */}
             </div>
           </div>
           <div className={classes.taskListRight}>
