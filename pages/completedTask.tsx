@@ -1,8 +1,6 @@
 import CompletedTask from "@/components/completedTask/completedTask";
 import Head from "next/head";
 
-// import React, { useEffect, useState } from "react";
-
 interface CompletedTasksProps {
   _id: string;
   title: string;
@@ -19,22 +17,6 @@ interface CompletedTasksPageProps {
 export default function CompletedTaskPage({
   completedTasks,
 }: CompletedTasksPageProps) {
-  // const [completedTasks, setCompletedTasks] = useState([]);
-  // useEffect(() => {
-  //   async function getCompletedTasks() {
-  //     const response = await fetch("/api/tasks/completedTask");
-  //     if (!response.ok) {
-  //       alert("Failed to fetch!");
-  //       return;
-  //     }
-  //     const data = await response.json();
-  //     console.log(data);
-  //     if (data) {
-  //       setCompletedTasks(data);
-  //     }
-  //   }
-  //   getCompletedTasks();
-  // }, []);
   return (
     <div className="completedTasksWrapper">
       <Head>
