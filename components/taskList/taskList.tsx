@@ -17,6 +17,8 @@ interface TaskListProps {
 }
 
 export default function TaskList({ tasks }: TaskListProps) {
+  console.log("tasks", tasks);
+
   const router = useRouter();
   async function completeTaskHandler(task: Task) {
     try {
@@ -41,7 +43,10 @@ export default function TaskList({ tasks }: TaskListProps) {
 
   return (
     <>
-      {tasks.length === 0 && <p>No tasks found.</p>}
+      {(tasks.length === 0 || (tasks.length > 0 && tasks[0].done === true)) && (
+        <p>No tasks found.</p>
+      )}
+
       {tasks.length > 0 &&
         tasks.map(
           (task) =>

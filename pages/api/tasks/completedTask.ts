@@ -10,9 +10,8 @@ export default async function handler(
     res.status(422).json({ message: "It is GET/POST method completed task" });
   }
   if (req.method === "POST") {
-    const { task, submittedDate } = req.body;
+    const { task } = req.body;
     console.log(task);
-    console.log(submittedDate);
 
     try {
       const client = await connectToDatabase();
@@ -22,7 +21,7 @@ export default async function handler(
         if (collection) {
           const result = await collection.updateOne(
             { _id: new ObjectId(task._id as string) },
-            { $set: { done: true, submittedDate: new Date(submittedDate) } }
+            { $set: { done: true, submittedDate: new Date() } }
           );
 
           if (result.modifiedCount === 0) {
@@ -54,12 +53,10 @@ export default async function handler(
       const completedTasks = await collection.find({ done: true }).toArray();
       if (completedTasks) {
         client.close();
-        res
-          .status(200)
-          .json({
-            message: "Fetched completed tasks successfully!",
-            completedTasks: completedTasks,
-          });
+        res.status(200).json({
+          message: "Fetched completed tasks successfully!",
+          completedTasks: completedTasks,
+        });
         return;
       } else {
         console.log("No completed task.");
