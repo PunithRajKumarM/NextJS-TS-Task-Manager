@@ -30,7 +30,7 @@ export default function CompletedTaskPage({
 export const getServerSideProps = async () => {
   try {
     const response = await fetch(
-      "http://localhost:3000/api/tasks/completedTask"
+      `${process.env.NEXT_PUBLIC_API_URL}/api/tasks/completedTask`
     );
     if (!response.ok) {
       console.log("Failed to fetch all the completed tasks.");

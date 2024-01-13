@@ -33,7 +33,9 @@ const EditTask: React.FC<EditTaskProps> = ({ data }) => {
 export async function getServerSideProps({ query }: NextPageContext) {
   const { id } = query;
   try {
-    const response = await fetch(`http://localhost:3000/api/tasks/${id}`);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${id}`
+    );
     if (!response.ok) {
       alert("Failed to fetch the data");
       return;

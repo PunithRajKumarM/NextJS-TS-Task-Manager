@@ -21,7 +21,7 @@ export default function Home({ tasks }: HomeProps) {
 
 export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
   try {
-    const response = await fetch("http://localhost:3000/api/tasks/getTasks");
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks/getTasks`);
     if (!response.ok) {
       console.error("No response");
       return { props: { tasks: [] } };

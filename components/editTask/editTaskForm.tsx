@@ -26,18 +26,21 @@ export default function EditTaskForm({
   async function submitHandler(e: FormEvent) {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:3000/api/tasks/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          newTitle,
-          newDescription,
-          newDate,
-          newDone: done,
-        }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            newTitle,
+            newDescription,
+            newDate,
+            newDone: done,
+          }),
+        }
+      );
       if (!res.ok) {
         alert("Failed to edit the task");
         return;
