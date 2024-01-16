@@ -43,7 +43,10 @@ export default function TaskList({ tasks }: TaskListProps) {
 
   return (
     <>
-      {(tasks.length === 0 || (tasks.length > 0 && tasks[0].done === true)) && (
+      {/* {(tasks.length === 0 || (tasks.length > 0 && tasks[0].done === true)) && (
+        <p>No tasks found.</p>
+      )} */}
+      {(tasks.length === 0 || tasks.every((task) => task.done)) && (
         <p>No tasks found.</p>
       )}
 
@@ -81,7 +84,6 @@ export default function TaskList({ tasks }: TaskListProps) {
                   <button onClick={() => completeTaskHandler(task)}>
                     Completed
                   </button>
-
 
                   <Link href={`/editTask/${task._id}`}>
                     <button>Edit</button>

@@ -11,7 +11,7 @@ export default async function handler(
   }
   if (req.method === "POST") {
     const { task } = req.body;
-    console.log(task);
+    // console.log(task);
 
     try {
       const client = await connectToDatabase();
