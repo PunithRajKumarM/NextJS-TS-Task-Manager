@@ -82,6 +82,7 @@ export default function TaskList({ tasks }: TaskListProps) {
                     Completed
                   </button>
 
+
                   <Link href={`/editTask/${task._id}`}>
                     <button>Edit</button>
                   </Link>
