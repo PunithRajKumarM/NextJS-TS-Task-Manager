@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import classes from "./taskList.module.css";
 import DeleteButton from "../deleteButton/deleteButton";
+import { getIndianStandardTime } from "@/date/convertDate";
+import { useRouter } from "next/router";
 
 interface Task {
   _id: string;
@@ -16,59 +17,80 @@ interface TaskListProps {
 }
 
 export default function TaskList({ tasks }: TaskListProps) {
-  function getIndianStandardTime(givenDate: string): string {
-    const dateObject = new Date(givenDate);
+  console.log("tasks", tasks);
 
-    const day = dateObject.getDate().toString().padStart(2, "0");
-    const month = (dateObject.getMonth() + 1).toString().padStart(2, "0");
-    const year = dateObject.getFullYear();
+  const router = useRouter();
+  async function completeTaskHandler(task: Task) {
+    try {
+      const response = await fetch("/api/tasks/completedTask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ task }),
+      });
 
-    const indianDateFormat = `${day}-${month}-${year}`;
+      if (!response.ok) {
+        alert("Failed to complete the task!");
+        return;
+      }
 
-    return indianDateFormat;
+      router.push("/completedTask");
+    } catch (error) {
+      console.error(error);
+    }
   }
-
-  console.log("Today date", new Date().toDateString());
 
   return (
     <>
-      {tasks.map((task) => (
-        <div key={task._id} className={classes.taskList}>
-          <div className={classes.taskListLeft}>
-            <div className={classes.taskListLeftFirst}>
-              <h2>{task.title.toUpperCase()}</h2>
-              <p>{task.description.toUpperCase()}</p>
-            </div>
-            <div className={classes.taskListLeftSecond}>
-              <span>
-                DUE DATE : {getIndianStandardTime(task.date.toLocaleString())}
-              </span>
+      {(tasks.length === 0 || (tasks.length > 0 && tasks[0].done === true)) && (
+        <p>No tasks found.</p>
+      )}
 
-              {new Date(task.date) > new Date() &&
-                new Date(task.date).toLocaleDateString() !==
-                  new Date().toLocaleDateString() && <p>Pending</p>}
-              {new Date(task.date) < new Date() &&
-                new Date(task.date).toLocaleDateString() !==
-                  new Date().toLocaleDateString() && (
-                  <p style={{ color: "red" }}>Over</p>
-                )}
-              {new Date(task.date).toLocaleDateString() ===
-                new Date().toLocaleDateString() && (
-                <p style={{ color: "green" }}>Due date</p>
-              )}
-            </div>
-          </div>
-          <div className={classes.taskListRight}>
-            {/* <button>Done</button> */}
+      {tasks.length > 0 &&
+        tasks.map(
+          (task) =>
+            task.done === false && (
+              <div key={task._id} className={classes.taskList}>
+                <div className={classes.taskListLeft}>
+                  <div className={classes.taskListLeftFirst}>
+                    <h2>{task.title.toUpperCase()}</h2>
+                    <p>{task.description.toUpperCase()}</p>
+                  </div>
+                  <div className={classes.taskListLeftSecond}>
+                    <span>
+                      DUE DATE :
+                      {getIndianStandardTime(task.date.toLocaleString())}
+                    </span>
 
-            <Link href={`/editTask/${task._id}`}>
-              <button>Edit</button>
-            </Link>
+                    {new Date(task.date) > new Date() &&
+                      new Date(task.date).toLocaleDateString() !==
+                        new Date().toLocaleDateString() && <p>Upcoming</p>}
+                    {new Date(task.date) < new Date() &&
+                      new Date(task.date).toLocaleDateString() !==
+                        new Date().toLocaleDateString() && (
+                        <p style={{ color: "red" }}>Overdue</p>
+                      )}
+                    {new Date(task.date).toLocaleDateString() ===
+                      new Date().toLocaleDateString() && (
+                      <p style={{ color: "green" }}>Due date</p>
+                    )}
+                  </div>
+                </div>
+                <div className={classes.taskListRight}>
+                  <button onClick={() => completeTaskHandler(task)}>
+                    Completed
+                  </button>
 
-            <DeleteButton id={task._id} />
-          </div>
-        </div>
-      ))}
+                  <Link href={`/editTask/${task._id}`}>
+                    <button>Edit</button>
+                  </Link>
+
+                  <DeleteButton id={task._id} />
+                </div>
+              </div>
+            )
+        )}
     </>
   );
 }

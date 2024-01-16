@@ -16,7 +16,8 @@ html {
   color: white;
 }
 
-.taskListWrapper {
+.taskListWrapper,
+.completedTasksWrapper {
   padding: 1rem 2rem;
   display: flex;
   flex-wrap: wrap;
